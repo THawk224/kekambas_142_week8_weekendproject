@@ -83,8 +83,8 @@ class Item {
     }
   
     removeQuantityFromCart(item: Item, quantity: number): void {
-      const itemsToRemove = this._cart.filter((cartItem) => cartItem.id === item.id).slice(0, quantity);
-      this._cart = this._cart.filter((cartItem) => !itemsToRemove.includes(cartItem));
+      const indexToRemove = this._cart.findIndex((cartItem) => cartItem.id === item.id);
+      this._cart.splice(indexToRemove, quantity);
     }
   
     cartTotal(): number {
@@ -94,16 +94,18 @@ class Item {
     cartHTMLElement(): HTMLDivElement {
       const cartDiv = document.createElement('div');
       cartDiv.classList.add('cart');
-  
-      const cartItems = this._cart.reduce((html, item) => {
+      const uniqueItems = new Set(this._cart);
+      console.log(uniqueItems);
+      let cartItems = '';
+      for (const item of uniqueItems) { 
         const count = this._cart.filter((cartItem) => cartItem.id === item.id).length;
-        return html + `
+        cartItems += `
           <div class="cart-item">
             <span>${item.name} x ${count}</span>
-            <button class="remove-one" id="${item.id}">Remove One</button>
-            <button class="remove-all" id="${item.id}">Remove All</button>
+            <button class="remove-one" id="${item.id}-rm1">Remove One</button>
+            <button class="remove-all" id="${item.id}-rmall">Remove All</button>
           </div>`;
-      }, '');
+      }
   
       cartDiv.innerHTML = `
         <h2>Cart</h2>
@@ -114,43 +116,22 @@ class Item {
       return cartDiv;
     }
   
-    updateCart(): void {
-      const cartDiv = document.getElementById('cart');
-      if (cartDiv) {
-        cartDiv.innerHTML = '';
-        const cartElement = this.cartHTMLElement();
-        this.addRemoveEventListeners();
-        cartDiv.appendChild(cartElement);
-      }
-    }
-  
     addRemoveEventListeners(): void {
-      const removeOneButtons = document.querySelectorAll('.remove-one');
-      const removeAllButtons = document.querySelectorAll('.remove-all');
-      
-      removeOneButtons.forEach((button) => {
-        console.log("testing");
-        button.addEventListener('click', () => {
-          const itemId = button.getAttribute('id');
-          const item = Shop.items.find((item) => item.id == itemId);
-          if (item) {
-            this.removeQuantityFromCart(item, 1);
-            this.updateCart();
-          }
-          console.log("button");
+      const uniqueItems = new Set(this._cart);
+      for (let item of uniqueItems) {
+        const removeOneButton = document.getElementById(`${item.id}-rm1`)!;
+        const removeAllButton = document.getElementById(`${item.id}-rmall`)!;
+        removeOneButton.addEventListener('click', () => {
+          console.log(this.cart);
+          this.removeQuantityFromCart(item, 1);
+          console.log(this.cart);
+          Shop.updateCart();
         });
-      });
-  
-      removeAllButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const itemId = button.getAttribute('id');
-          const item = Shop.items.find((item) => item.id == itemId);
-          if (item) {
-            this.removeFromCart(item);
-            this.updateCart();
-          }
+        removeAllButton.addEventListener('click', () => {
+          this.removeFromCart(item);
+          Shop.updateCart();
         });
-      });
+      }
     }
   
     static loginUser(): User | undefined {
@@ -211,8 +192,8 @@ class Item {
       if (cartDiv && Shop.myUser) {
         cartDiv.innerHTML = '';
         const cartElement = Shop.myUser.cartHTMLElement();
-        Shop.myUser.addRemoveEventListeners();
         cartDiv.appendChild(cartElement);
+        Shop.myUser.addRemoveEventListeners();
       }
     }
   

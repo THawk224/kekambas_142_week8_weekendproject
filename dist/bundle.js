@@ -963,198 +963,6 @@ var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const uuid_1 = __webpack_require__(1);
-// class Item {
-//   private _id: string;
-//   private _name: string;
-//   private _price: number;
-//   private _description: string;
-//   constructor(name: string, price: number, description: string) {
-//     this._id = uuidv4();
-//     this._name = name;
-//     this._price = price;
-//     this._description = description;
-//   }
-//   get id(): string {
-//     return this._id;
-//   }
-//   get name(): string {
-//     return this._name;
-//   }
-//   get price(): number {
-//     return this._price;
-//   }
-//   get description(): string {
-//     return this._description;
-//   }
-//   itemElement(): HTMLDivElement {
-//     const itemDiv = document.createElement('div');
-//     itemDiv.classList.add('item');
-//     itemDiv.innerHTML = `
-//       <h3>${this._name}</h3>
-//       <p>${this._description}</p>
-//       <p>Price: $${this._price}</p>
-//       <button class="add-to-cart" data-item-id="${this._id}">Add to Cart</button>
-//     `;
-//     return itemDiv;
-//   }
-// }
-// class User {
-//   private _id: string;
-//   private _name: string;
-//   private _age: number;
-//   private _cart: Item[];
-//   constructor(name: string, age: number) {
-//     this._id = uuidv4();
-//     this._name = name;
-//     this._age = age;
-//     this._cart = [];
-//   }
-//   get id(): string {
-//     return this._id;
-//   }
-//   get name(): string {
-//     return this._name;
-//   }
-//   get age(): number {
-//     return this._age;
-//   }
-//   get cart(): Item[] {
-//     return this._cart;
-//   }
-//   addToCart(item: Item): void {
-//     this._cart.push(item);
-//   }
-//   removeFromCart(item: Item): void {
-//     this._cart = this._cart.filter((cartItem) => cartItem.id !== item.id);
-//   }
-//   removeQuantityFromCart(item: Item, quantity: number): void {
-//     for (let i = 0; i < quantity; i++) {
-//       const index = this._cart.findIndex((cartItem) => cartItem.id === item.id);
-//       if (index !== -1) {
-//         this._cart.splice(index, 1);
-//       }
-//     }
-//   }
-//   cartTotal(): number {
-//     return this._cart.reduce((total, item) => total + item.price, 0);
-//   }
-//   cartHTMLElement(): HTMLDivElement {
-//     const cartDiv = document.createElement('div');
-//     cartDiv.classList.add('cart');
-//     const cartItems = this._cart.reduce((html, item) => {
-//       const count = this._cart.filter((cartItem) => cartItem.id === item.id).length;
-//       return html + `
-//         <div class="cart-item">
-//           <span>${item.name} x ${count}</span>
-//           <button class="remove-one" data-item-id="${item.id}">Remove One</button>
-//           <button class="remove-all" data-item-id="${item.id}">Remove All</button>
-//         </div>`;}, '');
-//     cartDiv.innerHTML = `
-//       <h2>Cart</h2>
-//       ${cartItems}
-//       <p>Total: $${this.cartTotal()}</p>
-//     `;
-//     return cartDiv;
-//   }
-//   updateCart(): void {
-//     const cartDiv = document.getElementById('cart');
-//     if (cartDiv) {
-//       cartDiv.innerHTML = '';
-//       const cartElement = this.cartHTMLElement();
-//       this.addRemoveEventListeners();
-//       cartDiv.appendChild(cartElement);
-//     }
-//   }
-//   addRemoveEventListeners(): void {
-//     const removeOneButtons = document.querySelectorAll('.remove-one');
-//     const removeAllButtons = document.querySelectorAll('.remove-all');
-//     removeOneButtons.forEach((button) => {
-//       button.addEventListener('click', () => {
-//         const itemId = button.getAttribute('data-item-id');
-//         const item = Shop.items.find((item) => item.id === itemId);
-//         if (item) {
-//           this.removeQuantityFromCart(item, 1);
-//           this.updateCart();
-//         }
-//       });
-//     });
-//     removeAllButtons.forEach((button) => {
-//       button.addEventListener('click', () => {
-//         const itemId = button.getAttribute('data-item-id');
-//         const item = Shop.items.find((item) => item.id === itemId);
-//         if (item) {
-//           this.removeFromCart(item);
-//           this.updateCart();
-//         }
-//       });
-//     });
-//   }
-//   static loginUser(): User | undefined {
-//     const nameInput = document.getElementById('name') as HTMLInputElement;
-//     const ageInput = document.getElementById('age') as HTMLInputElement;
-//     const name = nameInput.value.trim();
-//     const age = parseInt(ageInput.value);
-//     if (name && age) {
-//       return new User(name, age);
-//     }
-//     return undefined;
-//   }
-// }
-// class Shop {
-//   private static _items: Item[] = [];
-//   static myUser: User | undefined;
-//   constructor() {
-//     Shop._items = [
-//       new Item('Item 1', 10, 'Description of Item 1'),
-//       new Item('Item 2', 20, 'Description of Item 2'),
-//       new Item('Item 3', 30, 'Description of Item 3'),
-//       new Item('Item 4', 40, 'Description of Item 4'),
-//       new Item('Item 5', 50, 'Description of Item 5'),
-//       new Item('Item 6', 60, 'Description of Item 6'),
-//     ];
-//     this.showItems();
-//   }
-//   static get items(): Item[] {
-//     return Shop._items;
-//   }
-//   showItems(): void {
-//     const shopDiv = document.getElementById('shop');
-//     if (shopDiv) {
-//       Shop._items.forEach((item) => {
-//         const itemElement = item.itemElement();
-//         itemElement.querySelector('.add-to-cart')?.addEventListener('click', () => {
-//           if (Shop.myUser) {
-//             Shop.myUser.addToCart(item);
-//             Shop.updateCart();
-//           }
-//         });
-//         shopDiv.appendChild(itemElement);
-//       });
-//     }
-//   }
-//   static updateCart(): void {
-//     const cartDiv = document.getElementById('cart');
-//     if (cartDiv && Shop.myUser) {
-//       cartDiv.innerHTML = '';
-//       const cartElement = Shop.myUser.cartHTMLElement();
-//       Shop.myUser.addRemoveEventListeners();
-//       cartDiv.appendChild(cartElement);
-//     }
-//   }
-//   static loginUser(event: Event): void {
-//     event.preventDefault();
-//     const user = User.loginUser();
-//     if (user) {
-//       Shop.myUser = user;
-//       new Shop();
-//     }
-//   }
-// }
-// document.addEventListener('DOMContentLoaded', () => {
-//   const loginForm = document.getElementById('login-form');
-//   loginForm?.addEventListener('submit', Shop.loginUser);
-// });
-//New Codes
 class Item {
     constructor(name, price, description) {
         this._id = (0, uuid_1.v4)();
@@ -1213,8 +1021,8 @@ class User {
         console.log(this._cart);
     }
     removeQuantityFromCart(item, quantity) {
-        const itemsToRemove = this._cart.filter((cartItem) => cartItem.id === item.id).slice(0, quantity);
-        this._cart = this._cart.filter((cartItem) => !itemsToRemove.includes(cartItem));
+        const indexToRemove = this._cart.findIndex((cartItem) => cartItem.id === item.id);
+        this._cart.splice(indexToRemove, quantity);
     }
     cartTotal() {
         return this._cart.reduce((total, item) => total + item.price, 0);
@@ -1222,15 +1030,18 @@ class User {
     cartHTMLElement() {
         const cartDiv = document.createElement('div');
         cartDiv.classList.add('cart');
-        const cartItems = this._cart.reduce((html, item) => {
+        const uniqueItems = new Set(this._cart);
+        console.log(uniqueItems);
+        let cartItems = '';
+        for (const item of uniqueItems) {
             const count = this._cart.filter((cartItem) => cartItem.id === item.id).length;
-            return html + `
+            cartItems += `
           <div class="cart-item">
             <span>${item.name} x ${count}</span>
-            <button class="remove-one" id="${item.id}">Remove One</button>
-            <button class="remove-all" id="${item.id}">Remove All</button>
+            <button class="remove-one" id="${item.id}-rm1">Remove One</button>
+            <button class="remove-all" id="${item.id}-rmall">Remove All</button>
           </div>`;
-        }, '');
+        }
         cartDiv.innerHTML = `
         <h2>Cart</h2>
         ${cartItems}
@@ -1238,40 +1049,22 @@ class User {
       `;
         return cartDiv;
     }
-    updateCart() {
-        const cartDiv = document.getElementById('cart');
-        if (cartDiv) {
-            cartDiv.innerHTML = '';
-            const cartElement = this.cartHTMLElement();
-            this.addRemoveEventListeners();
-            cartDiv.appendChild(cartElement);
-        }
-    }
     addRemoveEventListeners() {
-        const removeOneButtons = document.querySelectorAll('.remove-one');
-        const removeAllButtons = document.querySelectorAll('.remove-all');
-        removeOneButtons.forEach((button) => {
-            console.log("testing");
-            button.addEventListener('click', () => {
-                const itemId = button.getAttribute('id');
-                const item = Shop.items.find((item) => item.id == itemId);
-                if (item) {
-                    this.removeQuantityFromCart(item, 1);
-                    this.updateCart();
-                }
-                console.log("button");
+        const uniqueItems = new Set(this._cart);
+        for (let item of uniqueItems) {
+            const removeOneButton = document.getElementById(`${item.id}-rm1`);
+            const removeAllButton = document.getElementById(`${item.id}-rmall`);
+            removeOneButton.addEventListener('click', () => {
+                console.log(this.cart);
+                this.removeQuantityFromCart(item, 1);
+                console.log(this.cart);
+                Shop.updateCart();
             });
-        });
-        removeAllButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const itemId = button.getAttribute('id');
-                const item = Shop.items.find((item) => item.id == itemId);
-                if (item) {
-                    this.removeFromCart(item);
-                    this.updateCart();
-                }
+            removeAllButton.addEventListener('click', () => {
+                this.removeFromCart(item);
+                Shop.updateCart();
             });
-        });
+        }
     }
     static loginUser() {
         const nameInput = document.getElementById('name');
@@ -1320,8 +1113,8 @@ class Shop {
         if (cartDiv && Shop.myUser) {
             cartDiv.innerHTML = '';
             const cartElement = Shop.myUser.cartHTMLElement();
-            Shop.myUser.addRemoveEventListeners();
             cartDiv.appendChild(cartElement);
+            Shop.myUser.addRemoveEventListeners();
         }
     }
     static loginUser(event) {
